@@ -1,0 +1,11 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MHK Subtitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{mhk-title}
+
+\newcommand{\subtitle}[1]{%
+	\gdef\suB{#1}}
+\newcommand{\suB}{\vspace -2ex}
+\renewcommand{\maketitlehookb}{%
+	\flushright\large \suB \vskip -2.5ex}

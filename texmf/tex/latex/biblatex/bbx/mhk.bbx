@@ -1,0 +1,91 @@
+% Based on: mla-strict, v2.1a 2022/02/22 * compatible with biblatex 3.16
+% Additionally on some basic styles
+
+\ProvidesFile{mhk.bbx}[2025/01/17 v2.0 biblatex bibliography style]
+
+\RequireBibliographyStyle{standard}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Defining Bibliography Environment %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\defbibenvironment{bibliography}
+  {\list
+     {}
+     {\setlength{\leftmargin}{\bibhang}%
+      \setlength{\itemindent}{-\leftmargin}%
+      \setlength{\itemsep}{11pt}%
+      \setlength\bibitemsep{22pt}
+      \setlength{\parsep}{\bibparsep}}}
+  {\endlist}
+  {\item}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%% Format Declarations %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareFieldFormat{title:article}{\mkbibquote{#1}}%
+\DeclareFieldFormat{title:online}{\mkbibquote{#1}}%
+\DeclareFieldFormat{title:book}{\mkbibemph{#1}}
+\DeclareFieldFormat{title:video}{\mkbibquote{#1}}% 
+\DeclareFieldFormat[online]{title}{\mkbibquote{#1}}% 
+\DeclareFieldFormat[video]{title}{\mkbibquote{#1}}% 
+
+\DeclareFieldFormat{url}{%
+  \ifhyperref%
+    {\href{#1}{\nolinkurl{#1}}}%
+    {\url{#1}}%
+}
+
+\DeclareFieldFormat[article]{volume}{#1}%
+\DeclareFieldFormat[article,review]{volume}{\bibstring{volume}\ppspace#1}
+\DeclareFieldFormat[article,periodical,review]{issue}{#1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%% Alias Declarations %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareBibliographyAlias{online}{article}
+\DeclareFieldAlias[online]{maintitle}{journaltitle}
+\DeclareFieldAlias[book]{subtitle}{booksubtitle}
+\DeclareFieldAlias[book]{title}{booktitle}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%% Macro Redefinitions %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewbibmacro*{author}{%
+  \printnames[sortname]{author}}
+
+\renewbibmacro{in:}{}
+
+\renewbibmacro*{issue+date}{%
+  \printfield{issue}%
+  \setunit*{\addspace}%
+  \usebibmacro{date}%
+  \newunit
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%% Bibliography Drivers %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareBibliographyDriver{online}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/editor+others/translator+others}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \newunit\newblock
+  \usebibmacro{finentry}%
+}
+
+
+\endinput

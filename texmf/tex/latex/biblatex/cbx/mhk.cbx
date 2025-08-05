@@ -1,0 +1,140 @@
+\ProvidesFile{mhk.cbx}[2023/12/12 v1.0 biblatex citation style]
+
+\RequireBibliographyStyle{standard}
+
+% Used verbose.cbx, but took only the things I needed
+% This makes things easier for my purposes.
+% Basically, I left out fullcite and shorthand option.
+% And also don't want the style to change in the footnotes.
+% And I left out the text cite, I just want everything 
+% in footnotes and then in bibliography.
+% I also modified the short style.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%% Format Declarations %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% online format is missing from biblatex.def
+\DeclareFieldFormat[online]
+  {citetitle}{\mkbibquote{#1\isdot}}
+
+% changed the delimiter between author and title to colon
+\DeclareDelimFormat{nametitledelim}{\addcolon\space}
+\DeclareNameAlias{default}{family-given}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% Cite pages %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newbibmacro*{cite:citepages}{}
+\newbibmacro*{cite:postnote}{}
+
+\DeclareBibliographyOption[string]{citepages}[permit]{%
+  \ifcsdef{cbx@opt@citepages@#1}
+    {\csuse{cbx@opt@citepages@#1}}
+    {\PackageError{biblatex}
+       {Invalid option 'citepages=#1'}
+       {Valid values are 'permit', 'suppress', 'omit', 'separate'.}}}
+
+\providebibmacro*{cite:citepages}{}
+\providebibmacro*{cite:postnote}{}
+       
+\def\cbx@opt@citepages@permit{%
+  \renewbibmacro*{cite:citepages}{}%
+  \renewbibmacro*{cite:postnote}{%
+  \usebibmacro{postnote}}}
+
+\def\cbx@opt@citepages@suppress{%
+  \renewbibmacro*{cite:citepages}{%
+    \clearfield{pages}%
+    \clearfield{pagetotal}}%
+  \renewbibmacro*{cite:postnote}{\usebibmacro{postnote}}}
+
+\def\cbx@opt@citepages@omit{%
+  \renewbibmacro*{cite:citepages}{%
+    \ifboolexpr{
+      test {\ifnumequal{\value{citecount}}{\value{citetotal}}}
+      and
+      test {\iffieldpages{postnote}}
+    }
+      {\clearfield{pages}%
+       \clearfield{pagetotal}}
+      {}}%
+  \renewbibmacro*{cite:postnote}{\usebibmacro{postnote}}}
+
+\def\cbx@opt@citepages@separate{%
+  \renewbibmacro*{cite:citepages}{}%
+  \renewbibmacro*{cite:postnote}{%
+      {\usebibmacro{cite:postnote:pages}}
+      {\usebibmacro{postnote}}}
+  \providebibmacro*{cite:postnote:pages}{%
+    \setunit{\printdelim{postnotedelim}}%
+    \bibstring{thiscite}%
+    \setunit{\addspace}%
+    \printfield{postnote}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%% Bibliography Options %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ExecuteBibliographyOptions{autocite=footnote,citepages=permit}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% Redefining Cite Format %%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newbibmacro*{cite}{%
+  \usebibmacro{cite:citepages}%
+  {\usebibmacro{cite:short}}}
+
+\newbibmacro*{cite:short}{%
+  \printnames{author}%
+  \setunit*{\printdelim{nametitledelim}}%
+  \printtext[bibhyperlink]{%
+    \printfield[citetitle]{labeltitle}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% Cite Commands %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareCiteCommand{\fullcite}
+  {\usebibmacro{prenote}}
+  {\usedriver
+     {\DeclareNameAlias{sortname}{default}}
+     {\thefield{entrytype}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}\finentry}
+
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}{
+    \setunit{\printdelim{prenotedelim}}}
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}\finentry}
+
+\DeclareCiteCommand{\parencite}[\mkbibparens]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}{
+    \setunit{\printdelim{prenotedelim}}}
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}\finentry}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}{
+    \setunit{\printdelim{prenotedelim}}}
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}\finentry}
+
+\DeclareCiteCommand{\smartcite}[\iffootnote\mkbibparens\mkbibfootnote]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}{
+    \setunit{\printdelim{prenotedelim}}}
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}\finentry}
+
+\endinput

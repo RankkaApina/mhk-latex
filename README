@@ -1,15 +1,3 @@
 This is my LaTeX and Bibliography templates for TKGA's MHK program. The bibliography file `texmf/bibtex/bib/mhk.bib` contains only a few examples on different bibliography items.
 
-# Bibliography Setup
-
 You need to compile the bibliography with Biber. 
-
-## Windows Setup for Biber
-
-If you are using MikTeX & TexWorks, you can add a default behavior for pdfLaTeX+MakeIndex+Biber:
-1. Go to `Edit` -> `Preferences`. 
-2. Check the arguments for `pdfLaTeX+MakeIndex+BibTeX`.
-3. Create new tool called `pdfLaTeX+MakeIndex+Biber`.
-4. Add the same arguments that you checked in step 2.
-
-This should work if you see Biber as a standalone option in the list. If this doesn't work, create a `bat` file like [here](https://tex.stackexchange.com/a/82585).

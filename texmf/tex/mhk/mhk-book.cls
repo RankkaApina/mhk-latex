@@ -1,6 +1,6 @@
 %%% mhk-book.cls %%%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{mhk-book}[2025/02/18 Version 3.0 by A. Parikka]
+\ProvidesClass{mhk-book}[2025/08/11 Version 3.1 by A. Parikka]
 
 \LoadClass{mhk}
 
@@ -58,9 +58,10 @@
     \${\mrsp}
   }
   \fancyhead[R]{%
-    MHK - Level \mhklvl \\ 
+    MHK - Level \mhklevel \\ 
     \review 
   }
+  \fancyfoot[C]{\thepage}
 }
 
 \fancypagestyle{book-info-noauthor}{%
@@ -73,15 +74,17 @@
     \${\mrsp}
   }
   \fancyhead[R]{%
-    MHK - Level \mhklvl \\ 
+    MHK - Level \mhklevel \\ 
     \review 
   }
+  \fancyfoot[C]{\thepage}
 }
 
 \fancypagestyle{review}{%
   \fancyhf{}%
-  \fancyhead[L]{MHK - Level \mhklvl}
+  \fancyhead[L]{MHK - Level \mhklevel}
   \fancyhead[R]{\review}
+  \fancyfoot[C]{\thepage}
 }
 
 % Set the default pagestyle

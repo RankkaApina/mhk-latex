@@ -1,7 +1,7 @@
 %%% mhk.cls %%%
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{mhk}[2025/08/05 Version 3.1 by A. Parikka]
+\ProvidesClass{mhk}[2025/08/11 Version 3.2 by A. Parikka]
 
 
 \LoadClass[11pt]{article}
@@ -22,6 +22,7 @@
 % ---------------------------------------------------------
 
 \RequirePackage[table, dvipsnames]{xcolor}
+\RequirePackage{st-colors}
 
 % Titles and headers
 % ---------------------------------------------------------
@@ -42,6 +43,8 @@
 \RequirePackage[all]{nowidow}
 % Some text utilities
 \RequirePackage{xspace}
+% Personal convenient formatting
+\RequirePackage{st-utilities}
 
 % Images
 % ---------------------------------------------------------
@@ -95,13 +98,12 @@
 % Paths
 % ---------------------------------------------------------
 
+\makeatletter
+\def\input@path{{./figures/}{./sections/}{./sections/subsec}}
+\makeatother
+
 % Set graphics path
-\graphicspath{./figures/}
-
-% Colors
-% ---------------------------------------------------------
-
-\definecolor{teal}{RGB}{0,110,140}
+\graphicspath{{./figures/}}
 
 % Headers
 % ---------------------------------------------------------
@@ -117,7 +119,9 @@
   \fancyhf{}%
   \fancyhead[L]{MHK - Level \mhklevel}
   \fancyhead[R]{\thetitle}
+  \fancyfoot[C]{\thepage}
 }
+
 
 % Text formatting
 % ---------------------------------------------------------
@@ -147,24 +151,6 @@
 \makeatother
 % use the url style
 \urlstyle{mhk}
-
-% Text shortcuts
-% ---------------------------------------------------------
-
-% Anything squared
-\newcommand*\sq{$^2$}
-% Shortcut to text superscript
-\newcommand{\tsup}{\textsuperscript}
-% Shortcut to text subscript
-\newcommand{\tsub}{\textsubscript}
-
-% Knitting
-% ---------------------------------------------------------
-
-% Deal with fractions
-\newcommand\sfrac[2]{#1/#2\xspace}
-% Inches
-\newcommand{\inches}{\ensuremath{{}^{\prime\prime}}\xspace}
 
 
 % Tables

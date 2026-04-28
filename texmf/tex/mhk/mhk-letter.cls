@@ -40,9 +40,6 @@
 % instructions received
 \def\@startdate{\relax}
 \newcommand{\startdate}[1]{\gdef\@startdate{#1}}
-% MHK level
-\def\@lvl{\relax}
-\newcommand{\lvl}[1]{\gdef\@lvl{#1}}
 % submission date
 \def\@letterdate{\relax}
 \newcommand{\letterdate}[1]{\gdef\@letterdate{#1}}
@@ -83,9 +80,21 @@
     \vskip 1.5em
     
     \begin{description}
-        \item [Level {\@lvl} Instructions Received:] \@startdate
+        \item [Level {\mhklevel} Instructions Received:] \@startdate
     %    \item [Submission Date:] \@letterdate
     \end{description}
 }
+
+% If more than one page, then header
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\fancypagestyle{letter}{%
+  \fancyhf{}%
+  \fancyhead[L]{MHK - Level \mhklevel}
+  \fancyfoot[C]{\thepage}
+}
+
+% Set the default pagestyle
+\pagestyle{letter}
 
 \endinput
